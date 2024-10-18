@@ -1,0 +1,33 @@
+body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+h3 {
+    font-size: 30px;
+}
+
+.red-color {
+    color: mediumorchid;
+}
+
+.green-color {
+    color: greenyellow;
+}
+
+.highlight {
+    background-color: papayawhip;
+}
+
+#special-para {
+    background-color: aqua;
+}
+
+.box {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: pink;
+
+    width: 500px;
+    height: 300px;
+
+}
