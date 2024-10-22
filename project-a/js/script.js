@@ -20,7 +20,7 @@ let minBubbles = 0;
 function setup() {
     createCanvas(800, 500);
 
-    // initial bubbles
+    // initial bubble
     for (let i = 0; i < maxBubbles; i++) {
         let bubble = {
             x: random(width),
