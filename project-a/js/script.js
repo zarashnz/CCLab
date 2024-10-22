@@ -12,55 +12,147 @@ let yPosition = 0;
 let noiseX = 0;
 let noiseY = 0;
 
+// bubbles
+let bubbles = [];
+let maxBubbles = 80;
+let minBubbles = 0;
+
 function setup() {
-    let canvas = createCanvas(800, 500);
-    canvas.parent("p5-canvas-container");
-}
+    createCanvas(800, 500);
 
-function draw() {
-    r = map(mouseX, 0, width, color1R, color2R);
-    g = map(mouseX, 0, width, color1G, color2G);
-    b = map(mouseX, 0, width, color1B, color2B);
-    background(r, g, b, 60);
-
-    // blooming and hiding of Jeliflora
-    if (mouseX < 540) {
-        drawOpenJeliflora();
-        if (mouseIsPressed) {
-            // wave = 1000;
-            yPosition--;
-            // translate(0, yPosition);
-        } else if (yPosition < 0) {
-            // wave = 2;
-            yPosition++;
-        }
-    } else {
-        if (mouseIsPressed) {
-            noiseX = random(-0.5, 1);
-            noiseY = random(-0.5, 0.5);
-        } else {
-            noiseX = 0;
-            noiseY = 0;
-        }
-        drawClosedJeliflora();
+    // initial bubbles
+    for (let i = 0; i < maxBubbles; i++) {
+        let bubble = {
+            x: random(width),
+            y: random(height),
+            size: random(2, 17),
+            speed: map(mouseX, 0, width, 0.8, 0.1),
+        };
+        bubbles.push(bubble);
     }
 }
 
-function drawOpenJeliflora() {
+function drawBubbles() {
+    let bubbleCount = map(mouseX, 0, width, maxBubbles, minBubbles);
+    for (let i = 0; i < bubbleCount; i++) {
+        let bubble = bubbles[i];
+        bubble.y -= bubble.speed;
+
+        if (bubble.y < -bubble.size) {
+            bubble.x = random(width);
+            bubble.y = height + bubble.size; // reset to bottom
+        }
+
+        //stroke(255);
+        if (mouseX < 200) {
+            stroke(255, random(200));
+            // stroke((255), random(178), (252), random(500));
+        } else {
+            stroke(255, random(80));
+        }
+
+        noFill();
+        // fill(255, 255, 255, 150);
+        ellipse(bubble.x, bubble.y, bubble.size);
+    }
+}
+
+function drawPetalLines(x, y, angle) {
     push();
-    translate(50, yPosition); // center position
+    translate(x, y);
+    rotate(angle);
 
-    let tentacleMovement1B = sin(frameCount * 0.03) * -2;
-    let tentacleMovement2B = sin(frameCount * 0.05 + PI / 4) * -1.5;
+    let weakPink = color(205, 144, 196, 80);
+    let strongPink = color(244, 57, 218, 200);
 
-    let petalMovement1B = sin(frameCount * 0.03) * 4;
-    let petalMovement2B = sin(frameCount * 0.02) * 3;
+    let lerpedColor1 = lerpColor(
+        strongPink,
+        weakPink,
+        map(mouseX, 0, width, 0, 1)
+    );
 
-    // open Jeliflora tentacles
+    let weakAqua = color(171, 196, 202);
+    let strongAqua = color(179, 241, 255,);
+
+    let lerpedColor4 = lerpColor(
+        strongAqua,
+        weakAqua,
+        map(mouseX, 0, width, 0, 1)
+    );
+
+    stroke(lerpedColor1);
+    strokeWeight(2);
+
+    // lines on petals
+    let length = 70;
+    let angleOffset = map(mouseX, 0, width, 10, 45);
+
+    for (let i = -1; i <= 1; i++) {
+        let angleOffsetForLine = i * angleOffset; // spread lines
+        let xOffset = length * cos(radians(angleOffsetForLine));
+        let yOffset = length * sin(radians(angleOffsetForLine));
+
+        line(0, 0, xOffset, yOffset);
+
+        // circles on lines
+        push();
+        stroke("#119992");
+        strokeWeight(0.3);
+        fill(lerpedColor4);
+        ellipse(xOffset, yOffset, 8);
+        pop();
+    }
+
+    pop();
+}
+
+function drawJeliflora(x, y) {
+    // updating properties based on interaction
+
+    let activeAmount = map(mouseX, 0, width * 0.6, 4, 0);
+
+    let scl = 1.0;
+    if (mouseX < 500) {
+        scl = map(mouseX, 0, 500, 1.1, 0.85);
+    } else {
+        scl = map(mouseX, 500, 800, 0.7, 0.35);
+    }
+
+    let angle = sin(frameCount * 0.05) * 0.1;
+    let yFluctuate = sin(frameCount * 0.03) * 20;
+
+    let tentacleMovement1B = sin(frameCount * 0.03) * -2 * activeAmount;
+    let tentacleMovement2B =
+        sin(frameCount * 0.05 + PI / 4) * -1.5 * activeAmount;
+
+    let petalMovement1B = sin(frameCount * 0.03) * 4 * activeAmount;
+    let petalMovement2B = sin(frameCount * 0.02) * 3 * activeAmount;
+
+    // DISPLAY
+
+    push();
+
+    translate(x, y + yPosition + yFluctuate); // center position
+    scale(scl);
+    rotate(angle);
+
+    translate(-310, -240); // quick fix to draw the ceature on x and y (anchor of the transformation functions)
+
+    // Jeliflora tentacles
+
+    let brightPurple = color(147, 116, 237);
+    let dullPurple = color(182, 159, 211);
+    let lerpedColor3 = lerpColor(
+        brightPurple,
+        dullPurple,
+        map(mouseX, 0, width, 0, 1)
+    );
+
+    fill(lerpedColor3);
+    stroke("#8045cb");
+    strokeWeight(0.5);
+
     beginShape();
-
-    fill("#c6ace9");
-    stroke("#a798f3");
 
     // TENTACLES 1 OPEN
     curveVertex(307 + tentacleMovement1B, 222);
@@ -89,171 +181,160 @@ function drawOpenJeliflora() {
 
     endShape();
 
-    // open Jeliflora petals
+    // Jeliflora petals
+    let brightPink = color(241, 129, 241);
+    let dullPink = color(228, 183, 228);
+    let lerpedColor2 = lerpColor(
+        brightPink,
+        dullPink,
+        map(mouseX, 0, width, 0, 1)
+    );
+
+    //fill(lerpedColor2);
+
+    let fluctAmount = map(mouseX, 0, width, 50, 0);
+
+    let rFluct = sin(frameCount * 0.03) * fluctAmount;
+    let gFluct = 0;
+    let bFluct = 0;
+
+    let rFluct2 = sin(frameCount * 0.02) * fluctAmount;
+    let gFluct2 = 0;
+    let bFluct2 = 0;
+
+    fill(
+        red(lerpedColor2) + rFluct,
+        green(lerpedColor2) + gFluct,
+        blue(lerpedColor2) + bFluct,
+    );
+    stroke("#D55DAF");
+    strokeWeight(1);
+    let close = 0;
+    if (mouseX > width / 2) {
+        close = (mouseX - width / 2) / 29;
+    }
+    // PETAL 1
     beginShape();
-    fill("#f2acf2");
-    stroke("#ee82cd");
+    curveVertex(309 + petalMovement1B, 226 + close * 3);
+    curveVertex(309 + petalMovement2B, 226 + close * 2);
+    curveVertex(288 + petalMovement1B + close, 172 + close * 2);
+    curveVertex(323 + petalMovement2B, 97 + close * 2);
+    curveVertex(355 + petalMovement1B - close, 160 + close * 2);
+    curveVertex(309 + petalMovement2B, 226 + close * 2);
+    curveVertex(309 + petalMovement1B, 226 + close * 2);
+    endShape();
+    // drawPetalLines(309, 226, radians(-90));
 
-    // PETAL 1 OPEN
-    curveVertex(309 + petalMovement1B, 226);
-    curveVertex(309 + petalMovement2B, 226);
-    curveVertex(288 + petalMovement1B, 172);
-    curveVertex(323 + petalMovement2B, 97);
-    curveVertex(355 + petalMovement1B, 160);
-    curveVertex(309 + petalMovement2B, 226);
-    curveVertex(309 + petalMovement1B, 226);
-
-    // PETAL 2 OPEN
-    curveVertex(309, 224 + petalMovement1B);
+    // PETAL 2
+    beginShape();
+    curveVertex(309, 224 + petalMovement1B + close);
     curveVertex(309, 224 + petalMovement2B);
-    curveVertex(380, 200 + petalMovement1B);
-    curveVertex(432, 228 + petalMovement2B);
+    curveVertex(380, 200 + petalMovement1B + close * 3);
+    curveVertex(432, 228 + petalMovement2B + close * 3);
     curveVertex(369, 259 + petalMovement1B);
-    curveVertex(309, 224 + petalMovement2B);
-    curveVertex(309, 224 + petalMovement1B);
+    curveVertex(309, 224 + petalMovement2B + close * 3);
+    curveVertex(309, 224 + petalMovement1B + close * 3);
+    endShape();
+    // drawPetalLines(309, 224, radians(10));
 
-    // PETAL 3 OPEN
-    curveVertex(306 + petalMovement1B, 224);
-    curveVertex(306 + petalMovement2B, 224);
-    curveVertex(248 + petalMovement1B, 186);
-    curveVertex(193 + petalMovement2B, 210);
-    curveVertex(260, 246 + petalMovement2B);
-    curveVertex(306, 224 + petalMovement2B);
-    curveVertex(306, 224 + petalMovement2B);
+    // PETAL 3
+    beginShape();
+    curveVertex(306 + petalMovement1B, 224 + close * 3);
+    curveVertex(306 + petalMovement2B, 224 + close * 3);
+    curveVertex(248 + petalMovement1B, 186 + close * 3);
+    curveVertex(193 + petalMovement2B, 210 + close * 3);
+    curveVertex(260 - close, 246 + petalMovement2B);
+    curveVertex(306 - close, 224 + petalMovement2B);
+    curveVertex(306 - close, 224 + petalMovement2B);
+    endShape();
+    // drawPetalLines(306, 224, radians(180));
 
     // PETAL 4 OPEN
+    beginShape();
+    curveVertex(304 + petalMovement1B, 224 + close * 3);
+    curveVertex(304 - close, 224 + petalMovement2B);
+    curveVertex(231 + petalMovement1B - close, 273 + close * 3);
+    curveVertex(218 - close, 336 + petalMovement2B);
+    curveVertex(290 + petalMovement1B - close * 3, 298 + close * 3);
+    curveVertex(304 - close, 224 + petalMovement2B);
     curveVertex(304 + petalMovement1B, 224);
-    curveVertex(304, 224 + petalMovement2B);
-    curveVertex(231 + petalMovement1B, 273);
-    curveVertex(218, 336 + petalMovement2B);
-    curveVertex(290 + petalMovement1B, 298);
-    curveVertex(304, 224 + petalMovement2B);
-    curveVertex(304 + petalMovement1B, 224);
+    endShape();
+    // circle(290 + petalMovement1B-close, 298+close*3,10);
+    // drawPetalLines(304, 224, radians(135));
 
     // PETAL 5 OPEN
+    beginShape();
+    curveVertex(308 + petalMovement2B - close, 224);
+    curveVertex(308 + petalMovement2B - close, 224 + close * 3);
+    curveVertex(392 + petalMovement2B, 278 + close * 3);
+    curveVertex(405 + petalMovement2B, 323 + close * 3);
+    curveVertex(340 + petalMovement2B - close, 299);
+    curveVertex(308 + petalMovement2B - close, 224);
     curveVertex(308 + petalMovement2B, 224);
-    curveVertex(308 + petalMovement2B, 224);
-    curveVertex(392 + petalMovement2B, 278);
-    curveVertex(405 + petalMovement2B, 323);
-    curveVertex(340 + petalMovement2B, 299);
-    curveVertex(308 + petalMovement2B, 224);
-    curveVertex(308 + petalMovement2B, 224);
-
     endShape();
+    // drawPetalLines(308, 224, radians(45));
+    push();
+    // -310, -240
+    translate(width / 2 - 92, height / 2 - 15);
+    rotate(PI / 2);
+    // let angleMin = 0;
+    let angleMax = map(mouseX, 0, width, 2.2 * PI, PI / 3);
+    // petalAngle = map(0, width, angleMin, angleMax);
+    for (let i = 0; i < 2; i++) {
+        drawPetalLines(0, 0, (angleMax / 5) * (i + 1));
+    }
+    for (let i = 0; i < 3; i++) {
+        drawPetalLines(0, 0, -(angleMax / 5) * i);
+    }
+    pop();
+    // JELIFLORA DECORATIONS
+    // fill(255);
+    // noStroke();
+    // circle(230 + petalMovement1B, 298, 10);
+    // circle(308 + petalMovement2B, 298, 10);
 
-    // open Jeliflora face
-    fill("#f2acf2");
-    stroke("#ee82cd");
+    // JELIFLORA FACE
+    fill(lerpedColor2);
+    stroke("#D55DAF");
     circle(307, 235, 40);
 
     pop();
 }
 
-function drawClosedJeliflora() {
-    push();
-    translate(50 + noiseX, noiseY);
+function draw() {
+    // mousetrack
+    // noStroke();
+    // fill(255, 0, 0);
+    // text("(" + mouseX + ", " + mouseY + ")", mouseX, mouseY);
 
-    let tentacleMovement1C = sin(frameCount * 0.02 + PI / 4) * 1;
-    let tentacleMovement2C = sin(frameCount * 0.02) * -1.5;
+    r = map(mouseX, 0, width, color1R, color2R);
+    g = map(mouseX, 0, width, color1G, color2G);
+    b = map(mouseX, 0, width, color1B, color2B);
+    background(r, g, b, 200);
 
-    let petalMovement1C = sin(frameCount * 0.01) * 2;
-    let petalMovement2C = sin(frameCount * 0.02) * 1;
+    // ENVIRONMENTAL ELEMENTS
+    // BUBBLES
+    drawBubbles();
 
-    // closed Jeliflora tentacles
-    beginShape();
-    fill("#c6ace9");
-    stroke("#a798f3");
+    // BLOOMING AND HIDING OF JELIFLORA
+    if (mouseX < 540) {
+        if (mouseIsPressed) {
+            // wave = 1000;
+            yPosition--;
+            // translate(0, yPosition);
+        } else if (yPosition < 0) {
+            // wave = 2;
+            yPosition++;
+        }
+    } else {
+        if (mouseIsPressed) {
+            noiseX = random(-1, 1);
+            noiseY = random(0, 0);
+        } else {
+            noiseX = 0;
+            noiseY = 0;
+        }
+    }
 
-    // TENTACLES 1 CLOSED
-    curveVertex(307 + tentacleMovement1C, 222 + tentacleMovement2C);
-    curveVertex(307 + tentacleMovement1C, 222);
-    curveVertex(300 + tentacleMovement1C, 240 + tentacleMovement2C);
-    curveVertex(305 + tentacleMovement1C, 250);
-    curveVertex(308 + tentacleMovement1C, 265);
-    curveVertex(307, 222 + tentacleMovement2C);
-    curveVertex(307 + tentacleMovement1C, 222);
-
-    // TENTACLES 2 CLOSED
-    curveVertex(309 + tentacleMovement2C, 227 + tentacleMovement1C);
-    curveVertex(309 + tentacleMovement2C, 227 + tentacleMovement1C);
-    curveVertex(320, 240 + tentacleMovement1C);
-    curveVertex(326 + tentacleMovement2C, 255);
-    curveVertex(330 + tentacleMovement2C, 270 + tentacleMovement1C);
-    curveVertex(309 + tentacleMovement2C, 227 + tentacleMovement1C);
-    curveVertex(309 + tentacleMovement2C, 227 + tentacleMovement1C);
-    endShape();
-
-    // closed Jeliflora petals
-    beginShape();
-    fill("#f2acf2");
-    stroke("#ee82cd");
-
-    // PETAL 1 CLOSED
-    curveVertex(309 + petalMovement1C, 226 + petalMovement2C);
-    curveVertex(309 + petalMovement1C, 226 + petalMovement2C);
-    curveVertex(305 + petalMovement1C, 210 + petalMovement2C);
-    curveVertex(308 + petalMovement1C, 190 + petalMovement2C);
-    curveVertex(315 + petalMovement1C, 205 + petalMovement2C);
-    curveVertex(309 + petalMovement1C, 226 + petalMovement2C);
-    curveVertex(309 + petalMovement1C, 226 + petalMovement2C);
-
-    // PETAL 2 CLOSED
-    curveVertex(309, 224 + petalMovement1C);
-    curveVertex(309, 224);
-    curveVertex(320 + petalMovement1C, 215);
-    curveVertex(325, 200);
-    curveVertex(330, 220 + petalMovement1C);
-    curveVertex(309 + petalMovement1C, 224);
-    curveVertex(309, 224 + petalMovement1C);
-
-    // PETAL 3 CLOSED
-    curveVertex(306 + petalMovement2C, 224 + petalMovement1C);
-    curveVertex(306 + petalMovement2C, 224 + petalMovement1C);
-    curveVertex(298 + petalMovement2C, 210 + petalMovement1C);
-    curveVertex(295 + petalMovement2C, 195 + petalMovement1C);
-    curveVertex(302 + petalMovement2C, 220 + petalMovement1C);
-    curveVertex(306 + petalMovement2C, 224 + petalMovement1C);
-    curveVertex(306 + petalMovement2C, 224 + petalMovement1C);
-
-    // PETAL 4 CLOSED
-    curveVertex(304 + petalMovement1C, 224);
-    curveVertex(304 + petalMovement2C, 224);
-    curveVertex(295 + petalMovement2C, 230 + petalMovement1C);
-    curveVertex(290 + petalMovement1C, 240);
-    curveVertex(300 + petalMovement2C, 235 + petalMovement1C);
-    curveVertex(304 + petalMovement1C, 224);
-    curveVertex(304 + petalMovement2C, 224 + petalMovement1C);
-
-    // PETAL 5 CLOSED
-    curveVertex(308 + petalMovement1C, 224 + petalMovement2C);
-    curveVertex(308 + petalMovement1C, 224 + petalMovement2C);
-    curveVertex(320 + petalMovement1C, 230);
-    curveVertex(330 + petalMovement1C, 240 + petalMovement2C);
-    curveVertex(318 + petalMovement1C, 235 + petalMovement2C);
-    curveVertex(308 + petalMovement1C, 224 + petalMovement2C);
-    curveVertex(308 + petalMovement1C, 224 + petalMovement2C);
-
-    endShape();
-
-    // closed Jeliflora face
-    fill("#f2acf2");
-    stroke("#ee82cd");
-    circle(310, 224, 20);
-
-    pop();
+    drawJeliflora(width / 2, height / 2 + noiseX, noiseY);
 }
-
-
-
-// incorporation of sin bubbles -- dissapear when black
-
-// dance and twirl or pulsing 
-
-// seabed and greens
-
-// constant glimmering pattern
-
-// mouse track
-// noStroke();
-// fill(255, 0, 0);
-// text("(" + mouseX + ", " + mouseY + ")", mouseX, mouseY);
