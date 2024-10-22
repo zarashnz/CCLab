@@ -112,6 +112,7 @@ function drawJeliflora(x, y) {
     let activeAmount = map(mouseX, 0, width * 0.6, 4, 0);
 
     let scl = 1.0;
+    scl = constrain(scl, 0.5, 1.1);
     if (mouseX < 500) {
         scl = map(mouseX, 0, 500, 1.1, 0.85);
     } else {
