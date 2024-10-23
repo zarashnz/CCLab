@@ -18,6 +18,7 @@ let minBubbles = 0;
 
 function setup() {
     createCanvas(800, 500);
+    canvas.parent("p5-canvas-container");
 
     // bubbles array
     for (let i = 0; i < 100; i++) {
