@@ -1,8 +1,8 @@
 /* CCLab CSS template project A */
 body {
-    background-color: white;
-    color: DimGray;
-    font-family: 'Courier New', Courier, monospace;
+    background-color: black;
+    color: white;
+    font-family: 'Monaco', Courier, monospace;
     font-size: 1em;
     line-height: 1.5em;
 }
@@ -14,7 +14,7 @@ body {
 
 .headline {
     font-size: 3em;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: 'Times New Roman', Times, serif;
     font-weight: 600;
     margin-top: 80px;
     margin-bottom: 60px;
@@ -27,20 +27,24 @@ body {
     margin: auto;
 }
 
-.black {
-    color: black;
+.white {
+    color: white;
 }
 
 .red {
-    color: DeepPink;
+    color: rgb(249, 154, 245);
 }
 
 .green {
     color: LightSeaGreen;
 }
 
-.yellow {
-    color: GoldenRod;
+.blue {
+    color: rgb(127, 168, 238)
+}
+
+.purple {
+    color: rgb(163, 112, 218);
 }
 
 .two-columns {
