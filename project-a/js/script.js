@@ -31,15 +31,16 @@ function setup() {
 }
 
 function drawBubbles() {
-    let bubbleCount = map(mouseX, 0, width, maxBubbles, minBubbles);
+    let bubbleCount = map(abs(mouseX), 0, width, maxBubbles, minBubbles);
+
     for (let i = 0; i < bubbleCount; i++) {
         let bubble = bubbles[i];
 
         //stroke(255);
-        if (mouseX < 200) {
+        if (0 < mouseX < 200) {
             stroke(255, random(10, 222));
             // stroke((255), random(178), (252), random(500));
-        } else {
+        } else if (mouseX >= 200) {
             stroke(255, random(80));
         }
 
@@ -110,9 +111,9 @@ function drawJeliflora(x, y) {
 
     let scl = 1.0;
 
-    if (mouseX < 500) {
+    if (0 < mouseX < 500) {
         scl = map(mouseX, 0, 500, 1.15, 0.85);
-    } else {
+    } else if (mouseX >= 500) {
         scl = map(mouseX, 500, 800, 0.7, 0.35);
     }
 
