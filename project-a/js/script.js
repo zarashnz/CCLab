@@ -7,28 +7,25 @@ let color2R = 0;
 let color2G = 0;
 let color2B = 0;
 
-let wave = 2;
 let yPosition = 0;
 let noiseX = 0;
 let noiseY = 0;
 
 // bubbles
 let bubbles = [];
-let maxBubbles = 80;
+let maxBubbles = 100;
 let minBubbles = 0;
 
 function setup() {
     createCanvas(800, 500);
 
-    // initial bubble
-    for (let i = 0; i < maxBubbles; i++) {
-        let bubble = {
-            x: random(width),
-            y: random(height),
-            size: random(2, 17),
-            speed: map(mouseX, 0, width, 0.8, 0.1),
-        };
-        bubbles.push(bubble);
+    // bubbles array
+    for (let i = 0; i < 100; i++) {
+        let x = random(width);
+        let y = random(height);
+        let size = random(2, 17);
+        let speed = map(mouseX, 0, width, 0.8, 0.1);
+        bubbles.push({ x: x, y: y, size: size, speed: speed });
     }
 }
 
@@ -36,16 +33,10 @@ function drawBubbles() {
     let bubbleCount = map(mouseX, 0, width, maxBubbles, minBubbles);
     for (let i = 0; i < bubbleCount; i++) {
         let bubble = bubbles[i];
-        bubble.y -= bubble.speed;
-
-        if (bubble.y < -bubble.size) {
-            bubble.x = random(width);
-            bubble.y = height + bubble.size; // reset to bottom
-        }
 
         //stroke(255);
         if (mouseX < 200) {
-            stroke(255, random(200));
+            stroke(255, random(10, 222));
             // stroke((255), random(178), (252), random(500));
         } else {
             stroke(255, random(80));
@@ -54,6 +45,11 @@ function drawBubbles() {
         noFill();
         // fill(255, 255, 255, 150);
         ellipse(bubble.x, bubble.y, bubble.size);
+
+        bubble.y -= 1;
+        if (bubble.y < -bubble.size) {
+            bubble.y = height + bubble.size;
+        }
     }
 }
 
@@ -71,8 +67,8 @@ function drawPetalLines(x, y, angle) {
         map(mouseX, 0, width, 0, 1)
     );
 
-    let weakAqua = color(171, 196, 202);
-    let strongAqua = color(179, 241, 255,);
+    let weakAqua = color(171, 196, 200, 100);
+    let strongAqua = color(179, 241, 255, 200);
 
     let lerpedColor4 = lerpColor(
         strongAqua,
@@ -112,14 +108,16 @@ function drawJeliflora(x, y) {
     let activeAmount = map(mouseX, 0, width * 0.6, 4, 0);
 
     let scl = 1.0;
-    scl = constrain(scl, 0.5, 1.1);
+
     if (mouseX < 500) {
-        scl = map(mouseX, 0, 500, 1.1, 0.85);
+        scl = map(mouseX, 0, 500, 1.15, 0.85);
     } else {
         scl = map(mouseX, 500, 800, 0.7, 0.35);
     }
 
     let angle = sin(frameCount * 0.05) * 0.1;
+    angle = constrain(angle, -PI / 4, PI / 4);
+
     let yFluctuate = sin(frameCount * 0.03) * 20;
 
     let tentacleMovement1B = sin(frameCount * 0.03) * -2 * activeAmount;
@@ -206,7 +204,7 @@ function drawJeliflora(x, y) {
     fill(
         red(lerpedColor2) + rFluct,
         green(lerpedColor2) + gFluct,
-        blue(lerpedColor2) + bFluct,
+        blue(lerpedColor2) + bFluct
     );
     stroke("#D55DAF");
     strokeWeight(1);
@@ -320,11 +318,9 @@ function draw() {
     // BLOOMING AND HIDING OF JELIFLORA
     if (mouseX < 540) {
         if (mouseIsPressed) {
-            // wave = 1000;
             yPosition--;
             // translate(0, yPosition);
         } else if (yPosition < 0) {
-            // wave = 2;
             yPosition++;
         }
     } else {
