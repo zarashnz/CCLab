@@ -28,10 +28,6 @@ function mousePressed() {
     let p = particles[i];
     p.x = mouseX;
     p.y = mouseY;
-    let angle = random(TWO_PI);
-    let speed = random(1, 3);
-    p.xSpeed = cos(angle) * speed;
-    p.ySpeed = sin(angle) * speed;
   }
 }
 
@@ -78,4 +74,5 @@ class Particle {
     pop();
   }
 }
+
 
