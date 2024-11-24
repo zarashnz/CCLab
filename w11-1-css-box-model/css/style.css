@@ -1,0 +1,71 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+.box {
+  background-color: cornflowerblue;
+  width: 150px;
+  height: 200px;
+
+  /* all over */
+  margin: 50px;
+
+  /* left and right*/
+  /* margin: 100px 20px;  */
+
+  /* top right bottom left
+  margin: 100px 0px 50px 200px; */
+
+  padding: 50px;
+  border: 10px solid gold;
+  /* border: dashed; */
+
+  position: absolute;
+  right: 100px;
+  top: 50px;
+
+
+}
+
+.wrapper {
+  background-color: coral;
+  max-width: 500px;
+  padding: 50px;
+  margin: 200px auto;
+}
+
+h1 {
+  background-color: chartreuse;
+  color: blueviolet;
+  margin-bottom: 20px;
+}
+
+p {
+  line-height: 20px;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-highlight {
+  background-color: aquamarine;
+}
+
+canvas {
+  display: block;
+}

@@ -1,0 +1,74 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: whitesmoke;
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body.p5-page {
+  background-color: black;
+}
+
+canvas {
+  display: block;
+}
+
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  color: slateblue;
+  text-decoration: none;
+}
+
+/* v is viewport */
+/* getting browsers width and height : fullscreen! */
+.main-container {
+  /* background-color: skyblue; */
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* margin: tb lr */
+/* have a fixed width */
+/* the outside container will control the inside */
+.main-title-container {
+  /* background-color: cornflowerblue; */
+  width: auto;
+  height: 150px;
+  text-align: center;
+  /* margin: 100px auto; */
+}
+
+/* padding for even seperation between text */
+.main-title-box {
+  /* background-color: aquamarine; */
+  font-size: 30px;
+  padding: 50px 0;
+
+}
+
+.start-link {
+  /* background-color: rgb(142, 123, 192); */
+  padding: 10px 0;
+
+}
+
+#p5-canvas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
