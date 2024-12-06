@@ -13,6 +13,15 @@ body.p5-page {
   background-color: black;
 }
 
+body.panel-page {
+  background-color: whitesmoke;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
 canvas {
   display: block;
 }
@@ -34,7 +43,6 @@ a:hover {
   /* background-color: skyblue; */
   width: 100vw;
   height: 100vh;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,3 +80,19 @@ a:hover {
   width: 100vw;
   height: 100vh;
 }
+
+body.panel-page #p5-canvas-container {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* .p5-canvas-container {
+  width: 100vw;
+  height: 100%;
+} */
