@@ -53,9 +53,8 @@ let seasons = [
   },
 ];
 
-
 function setup() {
-  let canvas = createCanvas(800, 500);
+  let canvas = createCanvas(800, 700);
   canvas.parent("p5-canvas-container");
   textAlign(CENTER, CENTER);
   textSize(16);
@@ -65,6 +64,7 @@ function setup() {
 function draw() {
   scale(1);
   background(0);
+  translate(40, 120);
 
   // outer ellipse
 
@@ -90,7 +90,7 @@ function draw() {
       ellipse(season.x, season.y, size, size);
     }
 
-    // main circle 
+    // main circle
     noStroke();
     fill(255);
     ellipse(season.x, season.y, 100);
@@ -98,9 +98,19 @@ function draw() {
     fill(20);
     text(season.label, season.x, season.y);
 
-    let clickableArea = { x: season.x - 50, y: season.y - 50, width: 100, height: 100 };
-    if (isMouseInside(clickableArea)) {
-      cursor(HAND); // Change cursor to hand
+    let clickableArea = {
+      x: season.x - 50 + 40,
+      y: season.y - 50 + 120,
+      width: 100,
+      height: 100,
+    };
+
+
+    if (mouseX > clickableArea.x && mouseX < clickableArea.x + clickableArea.width &&
+      mouseY > clickableArea.y && mouseY < clickableArea.y + clickableArea.height) {
+      cursor(HAND);
+    } else {
+      cursor(ARROW);
     }
   }
 
@@ -111,26 +121,31 @@ function draw() {
   fill(255);
 
   // cool - warm arrow
-  line(130, 50, 630, 50);
-  triangle(630, 45, 650, 50, 630, 55);
+  line(130, 5, 630, 5);
+  triangle(630, 0, 650, 5, 630, 10);
 
   // bright - muted arrow
   line(100, 100, 100, 420);
   triangle(95, 400, 100, 420, 105, 400);
 
-  textFont("Arial");
+  textFont("Times New Roman");
+  textStyle(ITALIC);
   textSize(15);
   noStroke();
-  text("Cool", 150, 30);
-  text("Warm", 630, 30);
-  text("Bright", 50, 100);
-  text("Muted", 50, 410);
+  text("COOL", 150, -20);
+  text("WARM", 630, -20);
+  text("BRIGHT", 50, 100);
+  text("MUTED", 50, 410);
   pop();
 }
 
 function mouseClicked() {
+
+  let adjustedMouseX = mouseX - 40;
+  let adjustedMouseY = mouseY - 120;
+
   for (let season of seasons) {
-    let distance = dist(mouseX, mouseY, season.x, season.y);
+    let distance = dist(adjustedMouseX, adjustedMouseY, season.x, season.y);
     if (distance < 50) {
       window.location.href = season.link;
     }
@@ -138,6 +153,10 @@ function mouseClicked() {
 }
 
 function isMouseInside(area) {
-  return mouseX > area.x && mouseX < area.x + area.width &&
-    mouseY > area.y && mouseY < area.y + area.height;
+  return (
+    mouseX > area.x &&
+    mouseX < area.x + area.width &&
+    mouseY > area.y &&
+    mouseY < area.y + area.height
+  );
 }

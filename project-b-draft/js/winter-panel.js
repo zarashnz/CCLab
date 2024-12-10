@@ -1,15 +1,15 @@
 let panelArray = [];
 let messages = [
-  "Icy colors suit you perfectly!",
-  "Your neutral colors are: white, gray, navy, and black.",
-  "Stick to pure white instead of off-white or cream.",
-  "Avoid warm colors, such as oranges and browns.",
-  "You are the only season that can pull off black!",
-  "Don't worry about growing gray hair, it will suit you.",
-  "Use pink blush instead of peach blush.",
-  "Opt for jewel tones.  Think ruby red, sapphire blue, and emerald green!",
-  "Black mascara is great for you!  The darker the better!",
-  "There's high contrast between your hair, skin and eye color!  Bright colors are better than muted colors.",
+  "ICY COLORS SUIT YOU PERFECTLY!",
+  "YOUR NEUTRAL COLORS ARE: WHITE, GRAY, NAVY, AND BLACK.",
+  "STICK TO PURE WHITE INSTEAD OF OFF-WHITE OR CREAM.",
+  "AVOID WARM COLORS, SUCH AS ORANGES AND BROWNS.",
+  "YOU ARE THE ONLY SEASON THAT CAN PULL OFF BLACK!",
+  "DON'T WORRY ABOUT GROWING GRAY HAIR, IT WILL SUIT YOU.",
+  "USE PINK BLUSH INSTEAD OF PEACH BLUSH.",
+  "OPT FOR JEWEL TONES. THINK RUBY RED, SAPPHIRE BLUE, AND EMERALD GREEN!",
+  "BLACK MASCARA IS GREAT FOR YOU! THE DARKER THE BETTER!",
+  "THERE'S HIGH CONTRAST BETWEEN YOUR HAIR, SKIN AND EYE COLOR! BRIGHT COLORS ARE BETTER THAN MUTED COLORS.",
 ];
 
 let winterColors = [
@@ -69,9 +69,12 @@ function draw() {
       );
       pop();
 
-      fill(0);
-      textAlign(CENTER, CENTER);
+      push();
+      textFont('Times New Roman');
+      textStyle(ITALIC);
       textSize(16);
+      fill(255);
+      textAlign(CENTER, CENTER);
 
       let words = panel.message.split(" ");
       let lineHeight = 20;
@@ -80,10 +83,49 @@ function draw() {
       for (let i = 0; i < words.length; i++) {
         text(words[i], panel.x + panel.width / 2, startY + i * lineHeight);
       }
+      pop();
     } else {
       fill(panel.color);
       noStroke();
       rect(panel.x, panel.y, panel.width, panel.height);
     }
   }
+
+  let arrowX = width / 2 - 15;
+  let arrowY = height - 30;
+  let arrowWidth = 30;
+  let arrowHeight = 30;
+
+  if (
+    mouseX > arrowX &&
+    mouseX < arrowX + arrowWidth &&
+    mouseY > arrowY - arrowHeight &&
+    mouseY < arrowY + arrowHeight
+  ) {
+
+    cursor(HAND);
+    push();
+    textFont('Times New Roman');
+    textSize(35);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text("🪞", arrowX + arrowWidth / 2, arrowY - 35);
+    pop();
+
+    if (mouseIsPressed) {
+      window.location.href = "mirror.html";
+    }
+  } else {
+    cursor(ARROW);
+  }
+
+  push();
+  textFont('Times New Roman');
+  textStyle(ITALIC);
+  textSize(15);
+  fill(255);
+  textSize(30);
+  text("→", arrowX, arrowY);
+  pop();
+
 }

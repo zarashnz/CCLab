@@ -1,15 +1,15 @@
 let panelArray = [];
 let messages = [
-  "Summers colors are soft, cool, and smokey.",
-  "Swap out harsh black for navy blue, greys, and cool taupes.",
-  "Avoid warm and bright colors.  You radiate in cool and subtle colors.",
-  "You have coolness in your skin and overall coloring.",
-  "You can wear all pastel shades!",
-  "Avoid colors like bright salmon and orange!  These colors drain your cool coloring, making you appear tired.",
-  "You have medium to low contrast.  Your features appear soft and blended.",
-  "Silver and platinum metals complement your skin best.",
-  "Choose soft pink blush, shimmery silvers, and neutral lipshades.",
-  "Hair colors with cool and ashy shades, such as ash browns or cooler blondes look great on you!",
+  "SUMMERS COLORS ARE SOFT, COOL, AND SMOKEY.",
+  "SWAP OUT HARSH BLACK FOR NAVY BLUE, GREYS, AND COOL TAUPES.",
+  "AVOID WARM AND BRIGHT COLORS. YOU RADIATE IN COOL AND SUBTLE COLORS.",
+  "YOU HAVE COOLNESS IN YOUR SKIN AND OVERALL COLORING.",
+  "YOU CAN WEAR ALL PASTEL SHADES!",
+  "AVOID COLORS LIKE BRIGHT SALMON AND ORANGE! THESE COLORS DRAIN YOUR COOL COLORING, MAKING YOU APPEAR TIRED.",
+  "YOU HAVE MEDIUM TO LOW CONTRAST. YOUR FEATURES APPEAR SOFT AND BLENDED.",
+  "SILVER AND PLATINUM METALS COMPLEMENT YOUR SKIN BEST.",
+  "CHOOSE SOFT PINK BLUSH, SHIMMERY SILVERS, AND NEUTRAL LIPSHADES.",
+  "HAIR COLORS WITH COOL AND ASHY SHADES, SUCH AS ASH BROWNS OR COOLER BLONDES LOOK GREAT ON YOU!"
 ];
 
 let summerColors = [
@@ -69,9 +69,12 @@ function draw() {
       );
       pop();
 
-      fill(0);
-      textAlign(CENTER, CENTER);
+      push();
+      textFont('Times New Roman');
+      textStyle(ITALIC);
       textSize(16);
+      fill(255);
+      textAlign(CENTER, CENTER);
 
       let words = panel.message.split(" ");
       let lineHeight = 20;
@@ -80,10 +83,48 @@ function draw() {
       for (let i = 0; i < words.length; i++) {
         text(words[i], panel.x + panel.width / 2, startY + i * lineHeight);
       }
+      pop();
     } else {
       fill(panel.color);
       noStroke();
       rect(panel.x, panel.y, panel.width, panel.height);
     }
   }
+  let arrowX = width / 2 - 15;
+  let arrowY = height - 30;
+  let arrowWidth = 30;
+  let arrowHeight = 30;
+
+  if (
+    mouseX > arrowX &&
+    mouseX < arrowX + arrowWidth &&
+    mouseY > arrowY - arrowHeight &&
+    mouseY < arrowY + arrowHeight
+  ) {
+
+    cursor(HAND);
+    push();
+    textFont('Times New Roman');
+    textSize(35);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text("🪞", arrowX + arrowWidth / 2, arrowY - 35);
+    pop();
+
+    if (mouseIsPressed) {
+      window.location.href = "mirror.html";
+    }
+  } else {
+    cursor(ARROW);
+  }
+
+  push();
+  textFont('Times New Roman');
+  textStyle(ITALIC);
+  textSize(15);
+  fill(255);
+  textSize(30);
+  text("→", arrowX, arrowY);
+  pop();
+
 }

@@ -1,16 +1,15 @@
 let panelArray = [];
 let messages = [
-
-  "Avoid cool and bright colors such as white and black.  Opt for cream and brown instead!",
-  "You radiate lots of warmth in your coloring.  Additonally, you have low contrast.",
-  "Autumns are the only season that can wear every shade of brown and orange in their entirety!",
-  "If you have naturally dark hair, try going lighter.  Copper and auburn hair colors work too!",
-  "You can rock leopard print!",
-  "Like the changing autumn leaves, deep greens, oranges, and browns are harmonious in your coloring",
-  "Gold jewelry looks better on you than silver jewelry.",
-  "Embrace cozy and rustic tones to highlight your natural beauty!",
-  "Go for a peach colored blush, and try out brown mascara as opposed to black!",
-  "Your palette loves earthy colors.  Incorporate these colors in your makeup and wardrobe!",
+  "AVOID COOL AND BRIGHT COLORS SUCH AS WHITE AND BLACK. OPT FOR CREAM AND BROWN INSTEAD!",
+  "YOU RADIATE LOTS OF WARMTH IN YOUR COLORING. ADDITIONALLY, YOU HAVE LOW CONTRAST.",
+  "AUTUMNS ARE THE ONLY SEASON THAT CAN WEAR EVERY SHADE OF BROWN AND ORANGE IN THEIR ENTIRETY!",
+  "IF YOU HAVE NATURALLY DARK HAIR, TRY GOING LIGHTER. COPPER AND AUBURN HAIR COLORS WORK TOO!",
+  "YOU CAN ROCK LEOPARD PRINT!",
+  "LIKE THE CHANGING AUTUMN LEAVES, DEEP GREENS, ORANGES, AND BROWNS ARE HARMONIOUS IN YOUR COLORING.",
+  "GOLD JEWELRY LOOKS BETTER ON YOU THAN SILVER JEWELRY.",
+  "EMBRACE COZY AND RUSTIC TONES TO HIGHLIGHT YOUR NATURAL BEAUTY!",
+  "GO FOR A PEACH COLORED BLUSH, AND TRY OUT BROWN MASCARA AS OPPOSED TO BLACK!",
+  "YOUR PALETTE LOVES EARTHY COLORS. INCORPORATE THESE COLORS IN YOUR MAKEUP AND WARDROBE!"
 ];
 
 let autumnColors = [
@@ -70,9 +69,12 @@ function draw() {
       );
       pop();
 
-      fill(0);
-      textAlign(CENTER, CENTER);
+      push();
+      textFont('Times New Roman');
+      textStyle(ITALIC);
       textSize(16);
+      fill(255);
+      textAlign(CENTER, CENTER);
 
       let words = panel.message.split(" ");
       let lineHeight = 20;
@@ -81,10 +83,48 @@ function draw() {
       for (let i = 0; i < words.length; i++) {
         text(words[i], panel.x + panel.width / 2, startY + i * lineHeight);
       }
+      pop();
     } else {
       fill(panel.color);
       noStroke();
       rect(panel.x, panel.y, panel.width, panel.height);
     }
   }
+  let arrowX = width / 2 - 15;
+  let arrowY = height - 30;
+  let arrowWidth = 30;
+  let arrowHeight = 30;
+
+  if (
+    mouseX > arrowX &&
+    mouseX < arrowX + arrowWidth &&
+    mouseY > arrowY - arrowHeight &&
+    mouseY < arrowY + arrowHeight
+  ) {
+
+    cursor(HAND);
+    push();
+    textFont('Times New Roman');
+    textSize(35);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text("🪞", arrowX + arrowWidth / 2, arrowY - 35);
+    pop();
+
+    if (mouseIsPressed) {
+      window.location.href = "mirror.html";
+    }
+  } else {
+    cursor(ARROW);
+  }
+
+  push();
+  textFont('Times New Roman');
+  textStyle(ITALIC);
+  textSize(15);
+  fill(255);
+  textSize(30);
+  text("→", arrowX, arrowY);
+  pop();
+
 }

@@ -50,6 +50,19 @@ function draw() {
 
   if (insidePortal) {
     cursor(HAND);
+
+    let textXOffset = sin(time * 0.3) * 3 + cos(time * 0.7) * 2;
+    let textYOffset = cos(time * 0.5) * 4 + sin(time * 0.9) * 2;
+
+    // text
+    fill(255, 200);
+    textAlign(CENTER, CENTER);
+    textSize(35);
+    textFont("Times New Roman");
+    textStyle(ITALIC);
+    text("ETERNAL HUES", movePortalX + textXOffset, movePortalY + textYOffset);
+
+
     // trails
     trails.push(new Trail(movePortalX, movePortalY));
   } else {
@@ -90,7 +103,7 @@ class Trail {
     this.radius = random(10, 50);
     this.color = color(random(100, 255), random(100, 255), random(255), 150);
     this.opacity = 255;
-    this.speed = random(0.5, 1);
+    this.speed = random(1, 2);
     this.growth = random(0.5, 1.5);
     this.spacing = random(10, 50);
   }

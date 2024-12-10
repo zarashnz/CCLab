@@ -1,19 +1,19 @@
 let panelArray = [];
 let messages = [
-  "Off-white or ivory looks better on you rather than stark white.",
-  "Your neutral colors are brown, taupe, and cream.",
-  "Avoid cool and muted colors, such as burgundy and grey.",
-  "Hair colors that suit you are copper, strawberry blonde, or golden brown!",
-  "You often tan easily in the sun.",
-  "Spring colors are warm and bright!",
-  "Warmth, like golden and honey tones, dominates your overall coloring.",
-  "Gold jewelry is best for you!",
-  "For makeup, opt for bronzer rather than blush!",
-  "Your features contrast each other rather than blend together.",
+  "OFF-WHITE OR IVORY LOOKS BETTER ON YOU RATHER THAN STARK WHITE.",
+  "YOUR NEUTRAL COLORS ARE BROWN, TAUPE, AND CREAM.",
+  "AVOID COOL AND MUTED COLORS, SUCH AS BURGUNDY AND GREY.",
+  "HAIR COLORS THAT SUIT YOU ARE COPPER, STRAWBERRY BLONDE, OR GOLDEN BROWN!",
+  "YOU OFTEN TAN EASILY IN THE SUN.",
+  "SPRING COLORS ARE WARM AND BRIGHT!",
+  "WARMTH, LIKE GOLDEN AND HONEY TONES, DOMINATES YOUR OVERALL COLORING.",
+  "GOLD JEWELRY IS BEST FOR YOU!",
+  "FOR MAKEUP, OPT FOR BRONZER RATHER THAN BLUSH!",
+  "YOUR FEATURES CONTRAST EACH OTHER RATHER THAN BLEND TOGETHER."
 ];
 
 let springColors = [
-  [245, 244, 222], // ecru
+  [223, 221, 197], // ecru
   [200, 187, 166], // coral reef
   [175, 110, 77], // clay brown
   [31, 68, 119], // chatams blue
@@ -69,9 +69,12 @@ function draw() {
       );
       pop();
 
-      fill(0);
-      textAlign(CENTER, CENTER);
+      push();
+      textFont('Times New Roman');
+      textStyle(ITALIC);
       textSize(16);
+      fill(255);
+      textAlign(CENTER, CENTER);
 
       let words = panel.message.split(" ");
       let lineHeight = 20;
@@ -80,10 +83,49 @@ function draw() {
       for (let i = 0; i < words.length; i++) {
         text(words[i], panel.x + panel.width / 2, startY + i * lineHeight);
       }
+      pop();
     } else {
       fill(panel.color);
       noStroke();
       rect(panel.x, panel.y, panel.width, panel.height);
     }
   }
+
+  let arrowX = width / 2 - 15;
+  let arrowY = height - 30;
+  let arrowWidth = 30;
+  let arrowHeight = 30;
+
+  if (
+    mouseX > arrowX &&
+    mouseX < arrowX + arrowWidth &&
+    mouseY > arrowY - arrowHeight &&
+    mouseY < arrowY + arrowHeight
+  ) {
+
+    cursor(HAND);
+    push();
+    textFont('Times New Roman');
+    textSize(35);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text("🪞", arrowX + arrowWidth / 2, arrowY - 35);
+    pop();
+
+    if (mouseIsPressed) {
+      window.location.href = "mirror.html";
+    }
+  } else {
+    cursor(ARROW);
+  }
+
+  push();
+  textFont('Times New Roman');
+  textStyle(ITALIC);
+  textSize(15);
+  fill(255);
+  textSize(30);
+  text("→", arrowX, arrowY);
+  pop();
+
 }
