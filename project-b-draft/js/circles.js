@@ -66,8 +66,9 @@ function draw() {
   background(0);
   translate(40, 120);
 
-  // outer ellipse
+  let hover = false;
 
+  // outer ellipse
   for (let season of seasons) {
     let glowSize = 20;
     let colorStep = season.colors.length / glowSize;
@@ -105,13 +106,21 @@ function draw() {
       height: 100,
     };
 
-
-    if (mouseX > clickableArea.x && mouseX < clickableArea.x + clickableArea.width &&
-      mouseY > clickableArea.y && mouseY < clickableArea.y + clickableArea.height) {
-      cursor(HAND);
-    } else {
-      cursor(ARROW);
+    if (
+      mouseX > clickableArea.x &&
+      mouseX < clickableArea.x + clickableArea.width &&
+      mouseY > clickableArea.y &&
+      mouseY < clickableArea.y + clickableArea.height
+    ) {
+      hover = true;
     }
+  }
+
+
+  if (hover) {
+    cursor(HAND);
+  } else {
+    cursor(ARROW);
   }
 
   // arrows
@@ -140,7 +149,6 @@ function draw() {
 }
 
 function mouseClicked() {
-
   let adjustedMouseX = mouseX - 40;
   let adjustedMouseY = mouseY - 120;
 

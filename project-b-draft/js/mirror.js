@@ -3,8 +3,7 @@ let VIDEO_HEIGHT = 480;
 
 let cam;
 let currentSeason = null;
-let shape;
-let webCam;
+let maskLayer;
 
 let seasonColors = {
   WINTER: [
@@ -58,15 +57,11 @@ let seasonColors = {
   ],
 };
 
-let backgroundColor
-let maskLayer;
-
 let seasonButtons = [];
 let buttonSize = 80;
 let buttonSpacing = 30;
 
 function setup() {
-  backgroundColor = color(20);
   let canvas = createCanvas(windowWidth, windowHeight);
   canvas.parent("p5-canvas-container");
 
@@ -111,7 +106,7 @@ function createSeasonButtons() {
 }
 
 function draw() {
-  background(backgroundColor);
+  background(20);
 
   if (cam.width > 0) {
     cam.loadPixels();
@@ -140,10 +135,11 @@ function draw() {
   textSize(15);
   text("HOME", 20, height - 10);
 
-
   textAlign(RIGHT, BOTTOM);
   text("EXPLORE", width - 20, height - 10);
   pop();
+
+  let hover = false;
 
   if (
     mouseX > 20 &&
@@ -151,9 +147,7 @@ function draw() {
     mouseY > height - 30 &&
     mouseY < height - 10
   ) {
-    cursor(HAND);
-  } else {
-    cursor(ARROW);
+    hover = true;
   }
 
   if (
@@ -162,9 +156,7 @@ function draw() {
     mouseY > height - 30 &&
     mouseY < height - 10
   ) {
-    cursor(HAND);
-  } else {
-    cursor(ARROW);
+    hover = true;
   }
 
   for (let i = 0; i < seasonButtons.length; i++) {
@@ -175,10 +167,14 @@ function draw() {
       mouseY > button.y - button.radius &&
       mouseY < button.y + button.radius
     ) {
-      cursor(HAND);
-    } else {
-      cursor(ARROW);
+      hover = true;
     }
+  }
+
+  if (hover) {
+    cursor(HAND);
+  } else {
+    cursor(ARROW);
   }
 }
 
@@ -284,16 +280,14 @@ function mousePressed() {
 
   for (let i = 0; i < seasonButtons.length; i++) {
     let button = seasonButtons[i];
-    if (
-      mouseX > button.x - button.radius &&
-      mouseX < button.x + button.radius &&
-      mouseY > button.y - button.radius &&
-      mouseY < button.y + button.radius
-    ) {
+    let d = dist(mouseX, mouseY, button.x, button.y);
+    if (d < button.radius) {
       currentSeason = button.season;
+      return;
     }
   }
 }
+
 function keyPressed() {
   if (key === " ") {
     currentSeason = null;
