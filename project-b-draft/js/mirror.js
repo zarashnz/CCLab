@@ -270,7 +270,7 @@ function mousePressed() {
     mouseY > height - 30 &&
     mouseY < height - 10
   ) {
-    window.location.href = "main.html";
+    window.location.href = "index.html";
   }
 
   if (
